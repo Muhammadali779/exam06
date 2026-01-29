@@ -274,3 +274,5 @@ GET /enrollments/
 | Template logikasi  | 15      |
 | Validatsiya        | 15      |
 | **Jami**           | **100** |
+
+
