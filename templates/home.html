@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Bosh sahifa - Student Management{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <h1>🎓 Student Course Management</h1>
+    <p>O'quv kurslarini va talabalarni boshqarish uchun zamonaviy platforma</p>
+    <div class="hero-buttons">
+        <a href="{% url 'course_list' %}" class="btn btn-primary">Kurslarni ko'rish</a>
+        <a href="{% url 'student_list' %}" class="btn btn-secondary">Studentlar</a>
+    </div>
+</section>
+
+<!-- Statistics -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">📚</div>
+        <div class="stat-number">{{ total_courses }}</div>
+        <div class="stat-label">Jami Kurslar</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">👨‍🎓</div>
+        <div class="stat-number">{{ total_students }}</div>
+        <div class="stat-label">Jami Studentlar</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-number">{{ total_enrollments }}</div>
+        <div class="stat-label">Ro'yxatga olinganlar</div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<section class="content-section">
+    <h2 class="section-title">Tezkor harakatlar</h2>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">➕</div>
+            <h3 style="margin-bottom: 1rem;">Yangi Kurs</h3>
+            <a href="{% url 'course_create' %}" class="btn btn-primary">Yaratish</a>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">👤</div>
+            <h3 style="margin-bottom: 1rem;">Yangi Student</h3>
+            <a href="{% url 'student_create' %}" class="btn btn-primary">Yaratish</a>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">📝</div>
+            <h3 style="margin-bottom: 1rem;">Ro'yxatga olish</h3>
+            <a href="{% url 'enrollment_create' %}" class="btn btn-primary">Boshlash</a>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section class="content-section">
+    <h2 class="section-title">Imkoniyatlar</h2>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">🎯</div>
+            <h3>Oson boshqaruv</h3>
+            <p style="color: var(--text-secondary); margin-top: 1rem;">
+                Kurslar va studentlarni oson va tez boshqaring
+            </p>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🔍</div>
+            <h3>Qidirish va filtr</h3>
+            <p style="color: var(--text-secondary); margin-top: 1rem;">
+                Ma'lumotlarni tez topish uchun qidirish va filtrlash
+            </p>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">📊</div>
+            <h3>Statistika</h3>
+            <p style="color: var(--text-secondary); margin-top: 1rem;">
+                Barcha ma'lumotlarning to'liq statistikasi
+            </p>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🌓</div>
+            <h3>Tungi rejim</h3>
+            <p style="color: var(--text-secondary); margin-top: 1rem;">
+                Yorug' va qorong'u rejimlar o'rtasida almashing
+            </p>
+        </div>
+    </div>
+</section>
+{% endblock %}

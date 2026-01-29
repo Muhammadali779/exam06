@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Ro'yxatga olishlar{% endblock %}
+
+{% block content %}
+<section class="content-section">
+    <div class="section-header">
+        <h1 class="section-title">📝 Ro'yxatga olishlar</h1>
+        <a href="{% url 'enrollment_create' %}" class="btn btn-primary">+ Yangi ro'yxat</a>
+    </div>
+
+    {% if enrollments %}
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Student</th>
+                    <th>Email</th>
+                    <th>Kurs</th>
+                    <th>Davomiyligi</th>
+                    <th>Ro'yxatga olingan vaqt</th>
+                    <th>Harakatlar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for enrollment in enrollments %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><strong>{{ enrollment.student.full_name }}</strong></td>
+                    <td>{{ enrollment.student.email }}</td>
+                    <td><strong>{{ enrollment.course.title }}</strong></td>
+                    <td><span class="badge badge-primary">{{ enrollment.course.duration_weeks }} hafta</span></td>
+                    <td>{{ enrollment.enrolled_at|date:"d.m.Y H:i" }}</td>
+                    <td class="table-actions">
+                        <a href="{% url 'student_detail' enrollment.student.pk %}" class="btn btn-sm btn-primary">Student</a>
+                        <a href="{% url 'course_detail' enrollment.course.pk %}" class="btn btn-sm btn-success">Kurs</a>
+                        <form method="post" action="{% url 'enrollment_delete' enrollment.pk %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">O'chirish</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-state-icon">📝</div>
+        <p class="empty-state-text">Hozircha ro'yxatga olinganlar yo'q</p>
+        <a href="{% url 'enrollment_create' %}" class="btn btn-primary">Birinchi ro'yxatni yaratish</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

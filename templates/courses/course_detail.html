@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ course.title }}{% endblock %}
+
+{% block content %}
+<section class="detail-card">
+    <div class="section-header">
+        <h1 class="section-title">📚 {{ course.title }}</h1>
+        <div style="display: flex; gap: 1rem;">
+            <a href="{% url 'course_edit' course.pk %}" class="btn btn-success">Tahrirlash</a>
+            <form method="post" action="{% url 'course_delete' course.pk %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">O'chirish</button>
+            </form>
+            <a href="{% url 'course_list' %}" class="btn btn-secondary">Orqaga</a>
+        </div>
+    </div>
+
+    <div class="detail-row">
+        <span class="detail-label">Kurs nomi:</span>
+        <span class="detail-value">{{ course.title }}</span>
+    </div>
+
+    <div class="detail-row">
+        <span class="detail-label">Ta'rif:</span>
+        <span class="detail-value">{{ course.description|default:"Ma'lumot yo'q" }}</span>
+    </div>
+
+    <div class="detail-row">
+        <span class="detail-label">Davomiyligi:</span>
+        <span class="detail-value">
+            <span class="badge badge-primary">{{ course.duration_weeks }} hafta</span>
+        </span>
+    </div>
+
+    <div class="detail-row">
+        <span class="detail-label">Yaratilgan vaqt:</span>
+        <span class="detail-value">{{ course.created_at|date:"d.m.Y H:i" }}</span>
+    </div>
+
+    <div class="detail-row">
+        <span class="detail-label">Studentlar soni:</span>
+        <span class="detail-value">
+            <span class="badge badge-success">{{ enrollments|length }} ta</span>
+        </span>
+    </div>
+</section>
+
+<section class="content-section">
+    <h2 class="section-title">👨‍🎓 Ro'yxatga olingan studentlar</h2>
+
+    {% if enrollments %}
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Student</th>
+                    <th>Email</th>
+                    <th>Yosh</th>
+                    <th>Ro'yxatga olingan vaqt</th>
+                    <th>Harakatlar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for enrollment in enrollments %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><strong>{{ enrollment.student.full_name }}</strong></td>
+                    <td>{{ enrollment.student.email }}</td>
+                    <td>{{ enrollment.student.age }} yosh</td>
+                    <td>{{ enrollment.enrolled_at|date:"d.m.Y H:i" }}</td>
+                    <td>
+                        <a href="{% url 'student_detail' enrollment.student.pk %}" class="btn btn-sm btn-primary">Ko'rish</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-state-icon">👨‍🎓</div>
+        <p class="empty-state-text">Bu kursga hali studentlar ro'yxatga olinmagan</p>
+        <a href="{% url 'enrollment_create' %}" class="btn btn-primary">Student qo'shish</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

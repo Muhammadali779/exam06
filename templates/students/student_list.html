@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Studentlar ro'yxati{% endblock %}
+
+{% block content %}
+<section class="content-section">
+    <div class="section-header">
+        <h1 class="section-title">👨‍🎓 Studentlar ro'yxati</h1>
+        <a href="{% url 'student_create' %}" class="btn btn-primary">+ Yangi student</a>
+    </div>
+
+    <!-- Filter Bar -->
+    <form method="get" class="filter-bar">
+        <input 
+            type="text" 
+            name="search" 
+            placeholder="Ism yoki email bo'yicha qidirish..." 
+            value="{{ search }}"
+            class="form-input"
+        >
+        <input 
+            type="number" 
+            name="min_age" 
+            placeholder="Minimal yosh" 
+            value="{{ min_age }}"
+            class="form-input"
+            min="16"
+        >
+        <button type="submit" class="btn btn-primary">Qidirish</button>
+        {% if search or min_age %}
+        <a href="{% url 'student_list' %}" class="btn btn-secondary">Tozalash</a>
+        {% endif %}
+    </form>
+
+    {% if students %}
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>To'liq ism</th>
+                    <th>Email</th>
+                    <th>Yosh</th>
+                    <th>Kurslar soni</th>
+                    <th>Yaratilgan vaqt</th>
+                    <th>Harakatlar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><strong>{{ student.full_name }}</strong></td>
+                    <td>{{ student.email }}</td>
+                    <td>{{ student.age }} yosh</td>
+                    <td><span class="badge badge-success">{{ student.get_enrolled_courses_count }} ta</span></td>
+                    <td>{{ student.created_at|date:"d.m.Y H:i" }}</td>
+                    <td class="table-actions">
+                        <a href="{% url 'student_detail' student.pk %}" class="btn btn-sm btn-primary">Ko'rish</a>
+                        <a href="{% url 'student_edit' student.pk %}" class="btn btn-sm btn-success">Tahrirlash</a>
+                        <form method="post" action="{% url 'student_delete' student.pk %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">O'chirish</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-state-icon">👨‍🎓</div>
+        <p class="empty-state-text">
+            {% if search or min_age %}
+                Qidiruv bo'yicha studentlar topilmadi
+            {% else %}
+                Hozircha studentlar yo'q
+            {% endif %}
+        </p>
+        {% if not search and not min_age %}
+        <a href="{% url 'student_create' %}" class="btn btn-primary">Birinchi studentni yaratish</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

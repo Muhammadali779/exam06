@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Kurslar ro'yxati{% endblock %}
+
+{% block content %}
+<section class="content-section">
+    <div class="section-header">
+        <h1 class="section-title">📚 Kurslar ro'yxati</h1>
+        <a href="{% url 'course_create' %}" class="btn btn-primary">+ Yangi kurs</a>
+    </div>
+
+    {% if courses %}
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Kurs nomi</th>
+                    <th>Davomiyligi</th>
+                    <th>Studentlar soni</th>
+                    <th>Yaratilgan vaqt</th>
+                    <th>Harakatlar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><strong>{{ course.title }}</strong></td>
+                    <td><span class="badge badge-primary">{{ course.duration_weeks }} hafta</span></td>
+                    <td><span class="badge badge-success">{{ course.get_enrolled_students_count }} ta</span></td>
+                    <td>{{ course.created_at|date:"d.m.Y H:i" }}</td>
+                    <td class="table-actions">
+                        <a href="{% url 'course_detail' course.pk %}" class="btn btn-sm btn-primary">Ko'rish</a>
+                        <a href="{% url 'course_edit' course.pk %}" class="btn btn-sm btn-success">Tahrirlash</a>
+                        <form method="post" action="{% url 'course_delete' course.pk %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">O'chirish</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-state-icon">📚</div>
+        <p class="empty-state-text">Hozircha kurslar yo'q</p>
+        <a href="{% url 'course_create' %}" class="btn btn-primary">Birinchi kursni yaratish</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

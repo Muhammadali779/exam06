@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Kurs {{ action }}{% endblock %}
+
+{% block content %}
+<section class="content-section">
+    <h1 class="section-title">📝 Kurs {{ action }}</h1>
+
+    <form method="post" style="max-width: 600px;">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="{{ form.title.id_for_label }}" class="form-label">Kurs nomi *</label>
+            {{ form.title }}
+            {% if form.title.errors %}
+                <div style="color: var(--danger); margin-top: 0.5rem;">
+                    {{ form.title.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.description.id_for_label }}" class="form-label">Ta'rif</label>
+            {{ form.description }}
+            {% if form.description.errors %}
+                <div style="color: var(--danger); margin-top: 0.5rem;">
+                    {{ form.description.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.duration_weeks.id_for_label }}" class="form-label">Davomiyligi (haftalarda) *</label>
+            {{ form.duration_weeks }}
+            {% if form.duration_weeks.errors %}
+                <div style="color: var(--danger); margin-top: 0.5rem;">
+                    {{ form.duration_weeks.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+            <button type="submit" class="btn btn-primary">Saqlash</button>
+            <a href="{% url 'course_list' %}" class="btn btn-secondary">Bekor qilish</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

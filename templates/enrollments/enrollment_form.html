@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Studentni kursga yozish{% endblock %}
+
+{% block content %}
+<section class="content-section">
+    <h1 class="section-title">📝 Studentni kursga yozish</h1>
+
+    <form method="post" style="max-width: 600px;">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="{{ form.student.id_for_label }}" class="form-label">Student *</label>
+            {{ form.student }}
+            {% if form.student.errors %}
+                <div style="color: var(--danger); margin-top: 0.5rem;">
+                    {{ form.student.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.course.id_for_label }}" class="form-label">Kurs *</label>
+            {{ form.course }}
+            {% if form.course.errors %}
+                <div style="color: var(--danger); margin-top: 0.5rem;">
+                    {{ form.course.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        {% if form.non_field_errors %}
+        <div style="color: var(--danger); margin-bottom: 1rem; padding: 1rem; background-color: var(--bg-tertiary); border-radius: 0.5rem;">
+            {{ form.non_field_errors }}
+        </div>
+        {% endif %}
+
+        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+            <button type="submit" class="btn btn-primary">Saqlash</button>
+            <a href="{% url 'enrollment_list' %}" class="btn btn-secondary">Bekor qilish</a>
+        </div>
+    </form>
+</section>
+{% endblock %}
